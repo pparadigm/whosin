@@ -23,12 +23,13 @@
 import serial
 
 
-# The 16-bit numbers appear when tags are scanned
-RFIDKeyDict = {06004FE1953D: "Joseph Livingdale",# 1 (see 'RFID Chart Info.txt')
-               06006F570B35: "Alice Varr",      # 2
-               06007266F7E5: "Grey Shultz",     # 3
-               0600530B6C32: "Madilynne Fuller",# 4
-               0600727FF0FB: "Sean Parmey"}     # 5
+# The 16-bit numbers appear when tags are scanned (they all have 0 at the
+# beginning, but Python doesn't like that to be there)
+RFIDKeyDict = {"06004FE1953D": "Joseph Livingdale",# 1 (see 'RFID Chart Info.txt')
+               "06006F570B35": "Alice Varr",       # 2
+               "06007266F7E5": "Grey Shultz",      # 3
+               "0600530B6C32": "Madilynne Fuller", # 4
+               "0600727FF0FB": "Sean Parmey"}      # 5
 count = 0
 listening = True
 
