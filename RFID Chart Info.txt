@@ -1,0 +1,9 @@
+#. Hex --> ID on card (placeholder name in whosin)
+(arbitrary). (as determined by HyperTerminal) --> on card ((in whosin))
+
+
+1. 06004FE1953D --> 0005235093 (Joseph Livingdale)
+2. 06006F570B35 --> 0007296779 (Alice Varr)
+3. 06007266F7E5 --> 0007497463 (Grey Shultz)
+4. 0600530B6C32 --> 0005442412 ("unregistered" test key)
+5. 0600727FF0FB --> 0007503856 (MASTER)
