@@ -33,3 +33,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Files
+settings.txt
+RFID Chart Info.txt
+RFIDKeyData.txt
