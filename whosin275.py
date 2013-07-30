@@ -47,7 +47,7 @@ def portConfig():
         rate = int(raw_input("Please enter the baud rate you would like to connect with.\n(If you don't know, enter 9600.)\n"))
         save = raw_input("Save these settings? [Y/n]:  ")
         # honestly, I don't really care how the user says "no"
-        if save == ("y" or "Y" or "Yes" or "YES" or ""):
+        if save.lower() in ("y" or "Y" or ""):
             settings = "%s : %s"%(name, rate)
             setDoc = open("settings.txt", "w")
             setDoc.write(settings)
