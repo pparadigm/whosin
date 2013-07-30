@@ -1,6 +1,6 @@
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: July 25, 2013 @ 4:06PM
+# last updated: July 29, 2013 @ 9:43AM
 
 # This is code. It might join other code in this repo in the future.
 
@@ -8,11 +8,9 @@
 #
 # 1. need to make sure a card can't be in the keyInfo database more than once
 # 2. shouldn't be able to delete all MASTER keys
-# 3. interval backups (30 minutes?) of the list to the file, in case of
-#    power failure
+# 3. backups whenever a card is added or removed, in case of power failure
 #
 # ---------
-
 
 
 import serial
@@ -24,7 +22,7 @@ count = 0
 
 
 class Key:
-    def __init__(self):
+    def change(self):
         self.choice = input('''
 Would you like to add or remove a key?
 
@@ -33,9 +31,9 @@ Would you like to add or remove a key?
 3. Exit
 ''')
         if self.choice == 1:
-            Key.add()
+            self.add()
         elif self.choice == 2:
-            Key.remove()
+            self.remove()
         elif self.choice == 3:
             return
         else:
@@ -48,6 +46,7 @@ Would you like to add or remove a key?
 
     def add(self):
         print "Please scan tag to be added."
+        self.ser = serial.Serial("COM6", 9600)
         self.ID = self.ser.readline()[2:14]
         if keyInfo.get(self.ID, 0):
             print "Successful scan."
@@ -60,25 +59,31 @@ Would you like to add or remove a key?
 2. No
 ''')
             if choice == 1:
-                Key.MASTER(self.ID)
+                self.MASTER(self.ID)
             elif choice == 2:
                 return
             else:
                 raise ValueError
 
 
-# double-check this dubious code, I think it's wrong
-##    def remove(self):
-##        print "Please scan tag to be removed from the system."
-##        self.ID = ser.readline()[2:14]
-##        if keyInfo.get(self.ID, 1):
-##            keyInfo.remove("%s : %s"%(self.ID, self.name))
-##            print "Successful removal."
-##        else:
-##            print "Tag already does not exist."
-##            self.choice = input()
+    def remove(self):
+        print "Please scan tag to be removed from the system."
+        self.ser = serial.Serial("COM6", 9600)
+        self.ID = self.ser.readline()[2:14]
+        if keyInfo.get(self.ID, 1):
+            keyInfo.remove("%s : %s"%(self.ID, self.name))
+            print "Successful removal."
+        else:
+            print "Tag already does not exist."
+            self.choice = input()
 
-        
+
+
+class Permissions:
+    def __init__(self):
+        pass
+
+
 
 class RFIDReader:
     def __init__(self):
@@ -87,13 +92,15 @@ class RFIDReader:
         self.data.close()
         self.ser = serial.Serial("COM6", 9600)
         print "Now connected to RFID reader."
-    if len(keyInfo) == 0:
-        print '''No keys in memory.
+        count = 0
+        if len(keyInfo) == 0:
+            print '''No keys in memory.
 Please scan tag you wish to become MASTER.'''
-        Key.MASTER(self.ser.readline()[1:13])
-        count = 1
+            self.ID = self.ser.readline()[1:13]
+            Key.MASTER(self.ID)
+            count += 1
         while listening:
-            count = count + 1
+            count += 1
             if count == 1:
                 self.serIn = self.ser.readline()[1:13]
             else:
@@ -108,6 +115,8 @@ Please scan tag you wish to become MASTER.'''
                 print "Unrecognized key."
 
 
-    print keyInfo
+    def protocol(self):
+        pass
 
 
+tag = RFIDReader()

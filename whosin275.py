@@ -17,7 +17,6 @@
 # ---------
 
 
-
 import serial
 import RFIDReader
 
@@ -36,8 +35,8 @@ def main():
             serRIn = serReader.readline()[1:13]
         else:
             serRIn = serReader.readline()[2:14]
-        if serRIn in RFIDKeyDict:
-            if RFIDKeyDict[serRIn] == "MASTER":
+        if ser in RFIDKeyDict:
+            if RFIDKeyDict[ser] == "MASTER":
                 masterKey()
             else:
                 print "Key recognized.\nWelcome, %s."%(RFIDKeyDict[serRIn])
