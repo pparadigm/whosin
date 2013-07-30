@@ -13,7 +13,9 @@ User walks up to any door, scans key on RFID reader.
 RFID reader beeps, as it has read a tag.
 RFID reader becomes unable to scan any more tags.
 System is checked for permissions. (Or perhaps level 0 is a local operation.)
-Greeting message is printed on LCD screen ("Recognized key.\nWelcome, Name."), door is unlocked, user is stored as scanning tag at X time at Y reader. (Though, perhaps level 0 is not recorded.)
+Greeting message is printed on LCD screen ("Recognized key.\nWelcome, Name."),
+ door is unlocked, user is stored as scanning tag at X time at Y reader. 
+(Though, perhaps level 0 is not recorded.)
 User opens door.
 User walks through.
 Door closes behind user, or is shut by user.
@@ -28,7 +30,8 @@ User walks up to door, scans key on RFID reader.
 RFID reader beeps, as it has read a tag.
 RFID reader becomes unable to scan any more tags.
 System is checked for permissions.
-Greeting message is printed on LCD screen("Recognized key.\nWelcome, Name."), door is unlocked, user is stored as scanning tag at X time at Y reader.
+Greeting message is printed on LCD screen("Recognized key.\nWelcome, Name."), 
+door is unlocked, user is stored as scanning tag at X time at Y reader.
 User opens door.
 User walks through.
 Door closes behind user, or is shut by user.
@@ -43,7 +46,8 @@ User walks up to door, scans key on RFID reader.
 RFID reader beeps, as it has read a tag.
 RFID reader becomes unable to scan any more tags.
 System is checked for permissions.
-Error message is printed on LCD screen ("Recognized key, but no access."), door remains locked, user is stored as scanning tag at X time at Y reader.
+Error message is printed on LCD screen ("Recognized key, but no access."), door
+ remains locked, user is stored as scanning tag at X time at Y reader.
 User does not pass Go.
 User does not collect $200.
 RFID reader can scan tags again.
@@ -56,7 +60,8 @@ User walks up to door, scans key on RFID reader.
 RFID reader beeps, as it has read a tag.
 RFID reader becomes unable to scan any more tags.
 System is checked for permissions.
-Error message is printed on LCD screen ("Unrecognized key, no access."), door remains locked, key ID is stored as being scanned at X time at Y reader.
+Error message is printed on LCD screen ("Unrecognized key, no access."), door 
+remains locked, key ID is stored as being scanned at X time at Y reader.
 RFID reader can scan tags again.
 ---------------
 
@@ -64,7 +69,8 @@ RFID reader can scan tags again.
 User with no tag:
 
 User walks up to door, tries handle.
-RFID reader does not beep, as it has not read a tag. LCD screen remains unchanged.
+RFID reader does not beep, as it has not read a tag. LCD screen remains 
+unchanged.
 Door remains locked.
 User dejectedly heads back to the kitchen to eat more dried mango strips.
 ---------------
@@ -72,5 +78,11 @@ User dejectedly heads back to the kitchen to eat more dried mango strips.
 
 User in burning building:
 
-USER RUNS TO DOOR AND FREAKS OUT CUZ IT'S NOT OPEN BUT THEN LOOKS AROUND AND SEES THE "^ EMERGENCY RELEASE BUTTON ^" STICKER AND PRESSES WHERE IT IS BUT THE STICKER IS ON THE WRONG SIDE SO USER PRESSES ON THE OTHER SIDE AND THE DOOR FALLS OFF OR OPENS OR DISINIGRATES OR WHATEVER IT DOES WHEN THAT BUTTON IS PRESSED AND USER GOES OUTSIDE AND FIRETRUCKS COME.
-System is burned up, so the unopened doors fail safe, locked. Unless, of course, the rest of the building burns. Then it will be all one big door. Or not-door.
+USER RUNS TO DOOR AND FREAKS OUT CUZ IT'S NOT OPEN BUT THEN LOOKS AROUND AND 
+SEES THE "^ EMERGENCY RELEASE BUTTON ^" STICKER AND PRESSES WHERE IT IS BUT 
+THE STICKER IS ON THE WRONG SIDE SO USER PRESSES ON THE OTHER SIDE AND THE 
+DOOR FALLS OFF OR OPENS OR DISINIGRATES OR WHATEVER IT DOES WHEN THAT BUTTON 
+IS PRESSED AND USER GOES OUTSIDE AND FIRETRUCKS COME.
+System is burned up, so the unopened doors fail safe, locked. Unless, of 
+course, the rest of the building burns. Then it will be all one big door. Or 
+not-door.
