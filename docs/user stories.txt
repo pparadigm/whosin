@@ -24,7 +24,7 @@ RFID reader can scan tags again.
 ---------------
 
 
-User with access level greater than room level:
+User with access level greater or equal to room level:
 
 User walks up to door, scans key on RFID reader.
 RFID reader beeps, as it has read a tag.

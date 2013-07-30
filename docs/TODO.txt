@@ -1,2 +1,2 @@
-Please see the top of each program. I keep the to-do list there, because then
-I will update it.
+Please see the top of each source file. I keep the to-do list there because 
+then I will remember to update it.

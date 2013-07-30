@@ -1,70 +1,55 @@
+#!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: July 25, 2013 @ 1:36PM
+# last updated: July 30, 2013 @ 11:43AM
 
-# This program is meant to handle the sign-in process with the RFID keys, and
-# allow management of the system.
-# It can also keep track of who is in the office, which is a bit creepy,
-# so that will be have to be talked about when this is implemented.
+# This program is meant to handle the door management process with the RFID
+# keys, and allow management of the system. Might track who is in the building.
 
 # FEATURES TO IMPLEMENT
 #
-# 1. Finish implementing RFIDReader and Key classes.
-# 2. Ask for port name(s) on first run, have options to save preferences
-# 3. Create list and process of who is in the building
-# 4. Change references to RFIDKeyDict
+# 1. Ask for port info on "first" run, have options to save preferences
+# 2. Create list and process for determining who is in the building
+# 3. No duplicate IDs in key database
+# 4. Back up whenever a card is added or removed, in case of power failure
 #
 # ---------
 
 
-import serial
-import RFIDReader
+import RFID
 
 listening = True
 
 
 
+def access(info):
+    scan = info[0]
+    valid = info[1]
+    if valid:
+        # permission checks will be performed, door will open or remain closed
+        # based on that check, status message will be displayed on LCD screen.
+        # But for now:
+        print scan
+    else:
+        print "Bad scan. Please rescan your tag."
+        return
+
+    
+
 def main():
-##    ser = serial.Serial(serialSetup(), 9600)
-    serReader = serial.Serial("COM6", 9600)
-    data = open("RFIDKeyData.txt", "r")
-    count = 0
+    # retrieving database information
+    keyDoc = open("RFIDKeyData.txt", "r")
+    # there should be one line, a printout of the last list backup, if any
+    keyInfo = [keyDoc.readline()]
+    keyDoc.close()
+    # for now, I am assuming settings already exist. In the future, they will
+    # be configurable when setDoc is empty.
+    setDoc = open("settings.txt", "r")
+    settings = setDoc.readline().split(" : ")
+    setDoc.close()
+    connection = RFID.RFIDReader(str(settings[0]), int(settings[1]))
     while listening:
-        count = count + 1
-        if count == 1:
-            serRIn = serReader.readline()[1:13]
-        else:
-            serRIn = serReader.readline()[2:14]
-        if ser in RFIDKeyDict:
-            if RFIDKeyDict[ser] == "MASTER":
-                masterKey()
-            else:
-                print "Key recognized.\nWelcome, %s."%(RFIDKeyDict[serRIn])
-        else:
-            print "Unrecognized key."
-
-
-def masterKey():
-    print "MASTER mode engaged."
-    # will come back to this later
-
-
-# don't know how to proceed, doesn't work
-##def serialSetup():
-##    try:
-##        settings = open("settings.txt", "r")
-##        port = settings.readline()[17:]
-##        if port == "":
-##            raise IOError
-##    except IOError:
-##        settings = open("settings.txt", "w")
-##        port = input("What port is your RFID reader on?\n")
-##        save = input("Save this setting:\nTrue\nFalse")
-##        if save:
-##            settings.write("Port preference: ", port)
-##    settings.close()
-##    print port
-##    return port
+        access(RFID.RFIDReader.protocol(connection))
 
 
 main()
