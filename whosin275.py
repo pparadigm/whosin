@@ -16,6 +16,7 @@
 
 
 import RFID
+import sys
 
 listening = True
 
@@ -44,15 +45,16 @@ def portConfig():
         save = False
         name = str(raw_input("Please enter the name of the port you would like to connect to.\n(Capitalization matters.)\n"))
         rate = int(raw_input("Please enter the baud rate you would like to connect with.\n(If you don't know, enter 9600.)\n"))
-        save = raw_input("Save these settings?\n1. Yes         2. No\n")
+        save = raw_input("Save these settings? [Y/n]:  ")
         # honestly, I don't really care how the user says "no"
-        if save == "1":
+        if save == ("y" or "Y" or "Yes" or "YES" or ""):
             settings = "%s : %s"%(name, rate)
             setDoc = open("settings.txt", "w")
             setDoc.write(settings)
             setDoc.close()
         else:
-            pass
+            print "Settings not saved, no valid configurations exist. Exiting..."
+            sys.exit(1)
     return name, rate
 
 

@@ -35,5 +35,3 @@ class RFIDReader:
         else:
             logging.info("Scan was bad.")
         return self.serIn, self.isValid
-
-    
