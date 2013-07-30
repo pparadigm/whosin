@@ -14,6 +14,7 @@
 
 
 import serial
+import logging
 
 
 keyInfo = []
@@ -86,34 +87,36 @@ class Permissions:
 
 
 class RFIDReader:
-    def __init__(self):
-        self.data = open("RFIDKeyData.txt", "r")
-        keyInfo = self.data.readlines()
-        self.data.close()
-        self.ser = serial.Serial("COM6", 9600)
-        print "Now connected to RFID reader."
-        count = 0
-        if len(keyInfo) == 0:
-            print '''No keys in memory.
-Please scan tag you wish to become MASTER.'''
-            self.ID = self.ser.readline()[1:13]
-            Key.MASTER(self.ID)
-            count += 1
-        while listening:
-            count += 1
-            if count == 1:
-                self.serIn = self.ser.readline()[1:13]
-            else:
-                self.serIn = self.ser.readline()[2:14]
-            if self.serIn in keyInfo:
-                if keyInfo[name] == "MASTER":
-                    print "MASTER mode initialized."
-                    Key.MASTER()
-                else:
-                    print "Key recognized.\nWelcome, %s."%(keyInfo[name])
-            else:
-                print "Unrecognized key."
-
+##    def __init__(self):
+##        self.data = open("RFIDKeyData.txt", "r")
+##        keyInfo = self.data.readlines()
+##        self.data.close()
+##        self.ser = serial.Serial("COM6", 9600)
+##        print "Now connected to RFID reader."
+##        count = 0
+##        if len(keyInfo) == 0:
+##            print '''No keys in memory.
+##Please scan tag you wish to become MASTER.'''
+##            self.ID = self.ser.readline()[1:13]
+##            Key.MASTER(self.ID)
+##            count += 1
+##        while listening:
+##            count += 1
+##            if count == 1:
+##                self.serIn = self.ser.readline()[1:13]
+##            else:
+##                self.serIn = self.ser.readline()[2:14]
+##            if self.serIn in keyInfo:
+##                if keyInfo[name] == "MASTER":
+##                    print "MASTER mode initialized."
+##                    Key.MASTER()
+##                else:
+##                    print "Key recognized.\nWelcome, %s."%(keyInfo[name])
+##            else:
+##                print "Unrecognized key."
+    def __init__(self, port, baud):
+        self.port=serial.Serial(port, baud)
+        logging.info('Attempted to open serial port')
 
     def protocol(self):
         pass
