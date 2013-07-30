@@ -7,7 +7,7 @@
 # FEATURES TO IMPLEMENT
 #
 # 1. need to make sure a card can't be in the keyInfo database more than once
-# 2. shouldn't be able to delete all MASTER keys
+# 2. shouldn't be able to delete all level 0 keys
 # 3. backups whenever a card is added or removed, in case of power failure
 #
 # ---------
