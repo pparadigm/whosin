@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: July 30, 2013 @ 11:43AM
+# last updated: July 30, 2013 @ 12:42PAM
 
 # This is code. Should be usuable with similar setups. I have been using an
 # ID-12 RFID reader from Innovations with this code.
@@ -23,7 +23,7 @@ class RFIDReader:
         self.port = serial.Serial(port, baud)
         logging.info("Attempted to open serial port.")
 
-    def protocol(self):
+    def read(self):
         self.serIn = self.port.readline()
         logging.info('Read in: "%s"'%(self.serIn))
         # isValid will later be determined by a calculated checksum vs.

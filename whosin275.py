@@ -1,17 +1,16 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: July 30, 2013 @ 11:43AM
+# last updated: July 30, 2013 @ 3:41PM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
 
 # FEATURES TO IMPLEMENT
 #
-# 1. Ask for port info on "first" run, have options to save preferences
-# 2. Create list and process for determining who is in the building
-# 3. No duplicate IDs in key database
-# 4. Back up whenever a card is added or removed, in case of power failure
+# 1. Create list and process for determining who is in the building
+# 2. No duplicate IDs in key database
+# 3. Back up whenever a card is added or removed, in case of power failure
 #
 # ---------
 
@@ -36,20 +35,40 @@ def access(info):
 
     
 
+def portConfig():
+    try:
+        setDoc = open("settings.txt", "r")
+        name, rate = setDoc.readline().split(" : ")
+        setDoc.close()
+    except (ValueError, IOError):
+        save = False
+        name = str(raw_input("Please enter the name of the port you would like to connect to.\n(Capitalization matters.)\n"))
+        rate = int(raw_input("Please enter the baud rate you would like to connect with.\n(If you don't know, enter 9600.)\n"))
+        save = raw_input("Save these settings?\n1. Yes         2. No\n")
+        # honestly, I don't really care how the user says "no"
+        if save == "1":
+            settings = "%s : %s"%(name, rate)
+            setDoc = open("settings.txt", "w")
+            setDoc.write(settings)
+            setDoc.close()
+        else:
+            pass
+    return name, rate
+
+
+
 def main():
     # retrieving database information
     keyDoc = open("RFIDKeyData.txt", "r")
     # there should be one line, a printout of the last list backup, if any
-    keyInfo = [keyDoc.readline()]
+    keyInfo = list(keyDoc.readline())
     keyDoc.close()
-    # for now, I am assuming settings already exist. In the future, they will
-    # be configurable when setDoc is empty.
-    setDoc = open("settings.txt", "r")
-    settings = setDoc.readline().split(" : ")
-    setDoc.close()
-    connection = RFID.RFIDReader(str(settings[0]), int(settings[1]))
+    settings = portConfig()
+    portName, baudRate = settings[0], settings[1]
+    connection = RFID.RFIDReader(portName, baudRate)
+    print "Now listening to RFID device."
     while listening:
-        access(RFID.RFIDReader.protocol(connection))
+        access(RFID.RFIDReader.read(connection))
 
 
 main()
