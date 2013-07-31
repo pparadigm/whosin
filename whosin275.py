@@ -17,6 +17,7 @@
 
 import RFID
 import sys
+import logging
 
 listening = True
 
@@ -38,21 +39,24 @@ def access(info):
 
 def portConfig():
     try:
-        setDoc = open("settings.txt", "r")
+        logging.info("Checking for configuration")
+        setDoc = open("whoisin.conf", "r")
         name, rate = setDoc.readline().split(" : ")
         setDoc.close()
     except (ValueError, IOError):
+        logging.warning("No configuration found, creating one")
         save = False
-        name = str(raw_input("Please enter the name of the port you would like to connect to.\n(Capitalization matters.)\n"))
-        rate = int(raw_input("Please enter the baud rate you would like to connect with.\n(If you don't know, enter 9600.)\n"))
+        name = str(raw_input("System port descripter: "))
+        rate = int(raw_input("Transmission rate: "))
         save = raw_input("Save these settings? [Y/n]:  ")
         # honestly, I don't really care how the user says "no"
         if save.lower() in ("y" or "Y" or ""):
-            settings = "%s : %s"%(name, rate)
-            setDoc = open("settings.txt", "w")
+            settings = "%s:%s" %(name, rate)
+            setDoc = open("whoisin.conf", "w")
             setDoc.write(settings)
             setDoc.close()
         else:
+            logging.error("No valid configuration found")
             print "Settings not saved, no valid configurations exist. Exiting..."
             sys.exit(1)
     return name, rate
@@ -60,17 +64,22 @@ def portConfig():
 
 
 def main():
+    logging.info("Welcome to 'whoisin'".center(80, '-'))
     # retrieving database information
-    keyDoc = open("RFIDKeyData.txt", "r")
+    logging.info("Opening key database")
+    keyDoc = open("RFIDKeyData.db", "r")
     # there should be one line, a printout of the last list backup, if any
-    keyInfo = list(keyDoc.readline())
+    keyInfo = list(keyDoc.read())
     keyDoc.close()
     settings = portConfig()
     portName, baudRate = settings[0], settings[1]
     connection = RFID.RFIDReader(portName, baudRate)
     print "Now listening to RFID device."
     while listening:
+        logging.debug("Polling reader for new data")
         access(RFID.RFIDReader.read(connection))
 
 
+
+logging.basicConfig(level=logging.DEBUG)
 main()
