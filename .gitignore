@@ -35,7 +35,7 @@ nosetests.xml
 .pydevproject
 
 # Files
-settings.txt
+*.conf
 RFID Chart Info.txt
-RFIDKeyData.txt
+*.db
 docs/thinkspace.txt
