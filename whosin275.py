@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: July 31, 2013 @ 10:13AM
+# last updated: August 1, 2013 @ 9:40AM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
@@ -23,8 +23,8 @@ listening = True
 
 
 def access(scan):
-    # An ID will eventually be produced. At this point, it is the whole scan.
-    ID = scan.serIn
+    # capitalized as a stylistic choice
+    ID = scan.ID.upper()
     if scan.isValid:
         # Permission checks will be performed, door will open or remain closed
         # based on that check, status message will be displayed on LCD screen.
@@ -44,7 +44,7 @@ def portConfig():
         save = False
         name = str(raw_input("System port descripter (case-sensitive): "))
         rate = int(raw_input("Transmission rate: "))
-        save = raw_input("Save these settings? [Y/N]: ").lower()
+        save = raw_input("Save these settings? [y/N]: ").lower().strip()
         # Honestly, I don't really care how the user says "no".
         if save == ("y" or "yes"):
             settings = "%s : %s"%(name, rate)
