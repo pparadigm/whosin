@@ -1,25 +1,36 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: August 1, 2013 @ 9:40AM
+# last updated: August 1, 2013 @ 3:02PM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
 
 # FEATURES TO IMPLEMENT
 #
-# 1. Create list and process for determining who is in the building
-# 2. No duplicate IDs in key database
-# 3. Back up whenever a card is added or removed, in case of power failure
-# 4. Way to change settings without deleting whosin.conf file
+# 1. How to run a CLI and the door system at the same time
+#    a. In the meantime, I will have two ways of running the program, which
+#       require a restart in between. I would like to improve this, because
+#       the doors would not be operable while the program database information
+#       was modified.
+# 2. Create list and process for determining who is in the building ("in" and
+#    "out" scanner tags)
+# 3. No duplicate IDs in key database
+#    a. What happens if one is manually added to the database? (json might
+#       handle this already)
+# 4. Back up whenever a card is added or removed, in case of power failure
+# 5. Way to change settings without deleting whosin.conf file (will be done
+#    with CLI)
+# 6. Make databases pretty.
 #
 # ---------
 
 
+import json
+
 import RFID
 
 listening = True
-
 
 
 def access(scan):
@@ -57,10 +68,16 @@ def portConfig():
 
 def main():
     # retrieving database information
-    keyDoc = open("RFIDKeyData.db", "r")
+    try:
+        keyDoc = open("RFIDKeyData.db", "r")
+    except IOError:
+        keyDoc = open("RFIDKeyData.db", "w")
+        keyDoc.close()
+        keyDoc = open("RFIDKeyData.db", "r")
     # There should be one line, a printout of the last list backup, if any.
-    keyInfo = list(keyDoc.readline())
+    keyInfo = str(keyDoc.readline())
     keyDoc.close()
+    keyInfo = json.loads(keyInfo)
     settings = portConfig()
     portName, baudRate = settings[0], settings[1]
     connection = RFID.RFIDReader(portName, baudRate)
