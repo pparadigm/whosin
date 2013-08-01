@@ -7,5 +7,5 @@ server where they are checked against a database and then a response is sent
 to the microprocessor which controls the door locks.
 
 
-This program should run equally well on windows and linux, or wherever the
-PySerial library can be installed (http://pyserial.sourceforge.net/pyserial.html).
+This program should run well wherever the PySerial library can be installed:
+http://pyserial.sourceforge.net/pyserial.html
