@@ -40,4 +40,4 @@ RFID Chart Info.txt
 *.db
 docs/thinkspace.txt
 docs/*.pdf
-checksumtest.py
+test.py
