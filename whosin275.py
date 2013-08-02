@@ -31,6 +31,8 @@
 import json
 
 import RFID
+import sys
+import logging
 
 listening = True
 
@@ -70,6 +72,7 @@ def portConfig():
 
 
 def main():
+    logging.info("Welcome to 'whoisin'".center(80, '-'))
     # retrieving database information
     try:
         keyDoc = open("RFIDKeyData.db", "r")
@@ -90,4 +93,5 @@ def main():
         access(connection)
 
 
+logging.basicConfig(level=logging.DEBUG)
 main()
