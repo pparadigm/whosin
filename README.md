@@ -1,10 +1,7 @@
 whosin
 ======
 
-This program aims to provide an authorization and access control system using
-RFID cards.  Cards are read using proximity readers, and sent serially to the
-server where they are checked against a database and then a response is sent
-to the microprocessor which controls the door locks.
+Meant to track who is in the office, and also manage the sign-in process using RFID tags.
 
 
 This program should run well wherever the PySerial library can be installed:
