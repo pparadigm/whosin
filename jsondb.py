@@ -47,6 +47,13 @@ class db:
             logging.debug("Key hash was %s", key)
             return None
 
+    def namelist(self):
+        names=[]
+        logging.info("Retrieving list of users")
+        for key in self.db.keys():
+            names.append(self.db[key]["user"])
+        return names
+
     def _save(self):
         logging.info("Syncing 't1'->'t3'")
         t3data=open(self.t3file, 'w')
