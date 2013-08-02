@@ -1,4 +1,8 @@
 {
+  "key3": {
+    "user": "ddiaz", 
+    "auth": 10
+  }, 
   "key2": {
     "user": "marisa", 
     "auth": 1
