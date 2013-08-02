@@ -1,5 +1,32 @@
+'''
+Simple JSON database to store key lookup, username, and authorization values.
+Author: Michael Aldridge
+
+Documentation:
+__init__: takes datastore as an argument.  Datastore should be the path to the
+file where the database will be stored.
+
+addkey: adds a key to the system.  Takes key, user, and auth, and creates a new
+entry.  If upsert is set, an existing entry may be updated.  Teturns 0 on
+successful completion.
+
+delkey: removes a key from the system.  Takes key and returns status code (1 for
+error, 0 for successful completion)
+
+keylookup: looks up a key in the database.  Takes key and returns username, auth
+on success; otherwise, returns None.
+
+namelist: takes no arguments, returns a list of users.
+
+_save: internal function called to save the database.  Called any time that an
+action modifies the database stored in RAM.
+
+_verifyt3: checks the t3 file before committing the backup by overwriting the old
+data file. Returns nothing on success, prints the db to the screen on error.
+'''
 import json
 import logging
+
 
 class db:
     def __init__(self, datastore):
@@ -52,6 +79,7 @@ class db:
         logging.info("Retrieving list of users")
         for key in self.db.keys():
             names.append(self.db[key]["user"])
+        logging.debug("%s", names)
         return names
 
     def _save(self):
@@ -59,4 +87,10 @@ class db:
         t3data=open(self.t3file, 'w')
         #sync t1data to t3data
         json.dump(self.db, t3data, indent=2)
+        t3data.close()
+        
+    def _confirmt3(self):
+        logging.debug("Confirming t3 integrity")
+        t3data=open(self.t3file)
+        self.dbtest=json.load(t3data)
         t3data.close()
