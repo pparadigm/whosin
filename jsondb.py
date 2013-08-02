@@ -7,20 +7,21 @@ class db:
         logging.debug("Loading 't3'->'t1'")
         t3data=open(self.t3file)
         self.db=json.load(t3data)
-        #self.db{key: {"user":user, "auth": auth}} #load the data
         t3data.close()
 
     def addkey(self, key, user, auth, upsert=False):
         logging.info("Adding new key to system")
         if key in self.db: #check if key exists
-            logging.warn("User already exists with key {0}",key) 
             if upsert:
-                #add upsert functionality
-                pass
-            return 1
+                self.db[key]={"user":user, "auth":auth}
+                logging.warning("User '%s' already exists with key %s",user,key) 
+                return 0
+            else:
+                logging.error("User '%s' already exists with key %s; (is upsert set?)",user,key) 
+                return 1
         else:
             self.db[key]={"user":user, "auth": auth}
-            logging.info("Added user {0} with key {1} to database", user, key)
+            logging.info("Added user %s with key %s to database", user, key)
             self._save()
             return 0
 
@@ -28,22 +29,22 @@ class db:
         logging.info("Removing key from system")
         if key in self.db: #check if key exists
             del self.db[key]
-            logging.info("Key id {0} removed", key)
+            logging.info("Key id %s removed", key)
             self._save()
             return 0
         else:
-            logging.warn("Key does not exist")
+            logging.warning("Key does not exist")
             return 1
         
     def keylookup(self, key):
-        logging.info("Looking up key {0}")
+        logging.info("Looking up key %s")
         if key in self.db: #check if key exists
             logging.info("Key found")
-            logging.debug("Returned data {0}", self.db[key])
+            logging.debug("Returned data %s", self.db[key])
             return self.db[key]["user"], self.db[key]["auth"]
         else:
             logging.warning("Key not found")
-            logging.debug("Key hash was {0}", key)
+            logging.debug("Key hash was %s", key)
             return None
 
     def _save(self):

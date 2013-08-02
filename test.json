@@ -10,5 +10,9 @@
   "key1": {
     "user": "maldridge", 
     "auth": 0
+  }, 
+  "key4": {
+    "user": "tbertucci", 
+    "auth": 4
   }
 }
