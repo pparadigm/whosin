@@ -10,4 +10,3 @@ to the microprocessor which controls the door locks.
 This program should run well wherever the PySerial and jsondb libraries can be
 installed:
 http://pyserial.sourceforge.net/pyserial.html
-https://github.com/the-maldridge/whosin/blob/master/jsondb.py
