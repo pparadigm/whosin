@@ -16,7 +16,7 @@ import serial
 class RFIDReader:
     def __init__(self, port, baud):
         self.port = serial.Serial(port, baud)
-        logging.info("Opened serial port: ", port)
+        logging.info("Opened serial port: %s"%(port))
 
     def readProtocol(self):
         self.serIn = self.port.readline()
@@ -42,4 +42,4 @@ class RFIDReader:
         else:
             self.isValid = False
             logging.info("Scan was bad. Provided checksum was %i, while \
-calculated checksum was %i"%(self.scanCksm, self.calcCksm))
+calculated checksum was %i."%(self.scanCksm, self.calcCksm))

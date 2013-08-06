@@ -28,11 +28,10 @@
 #
 # ---------
 
-import sys
+import json
 import logging
 
 import RFID
-import jsondb
 
 listening = True
 
@@ -57,8 +56,7 @@ def portConfig():
         name, rate = setDoc.readline().split(" : ")
         setDoc.close()
     except (ValueError, IOError):
-        logging.warning("No configuration found, creating one")
-        save = False
+        logging.warning("No configuration found, attempting to create one...")
         name = str(raw_input("System port descripter (case-sensitive): "))
         rate = int(raw_input("Transmission rate: "))
         save = raw_input("Save these settings? [y/N]: ").lower().strip()
@@ -73,21 +71,43 @@ def portConfig():
     return name, rate
 
 
-def init():
-    global keydb
-    global doordb
+def startup():
+    global keyDB
+    global doorDB
     global connection
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info("Welcome to 'whosin'".center(80, '-'))
-    keydb = jsondb.db("keys.db")
-    doordb = jsondb.db("doors.db")
-    portName, bautRate = portConfig()
+    logging.basicConfig(level = logging.DEBUG)
+    logging.info("Welcome to Who's In.".center(80, '-'))
+    # I feel like there is a way to condense the next 15 lines. If you know
+    # how, please let me know.
+    try:
+        keyDoc = open("keys.db", "r")
+        keyDB = keyDoc.readline()
+    except IOError:
+        keyDoc = open("keys.db", "w")
+        keyDoc.write("[]")
+        keyDB = "[]"
+    keyDoc.close()
+    try:
+        doorDoc = open("doors.db", "r")
+        doorDB = doorDoc.readline()
+    except IOError:
+        doorDoc = open("doors.db", "w")
+        doorDoc.write("[]")
+        doorDB = "[]"
+    doorDoc.close()
+    keyDB = json.loads(keyDB)
+    doorDB = json.loads(doorDB)
+    portName, baudRate = portConfig()
     connection = RFID.RFIDReader(portName, baudRate)
-    
+    print "Now listening to specified port."
+
+
 def main():
     while listening:
         connection.readProtocol()
         access(connection)
 
-init()
+
+
+startup()
 main()
