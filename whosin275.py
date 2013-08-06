@@ -28,8 +28,8 @@
 #
 # ---------
 
-
-import json
+import sys
+import logging
 
 import RFID
 import jsondb
@@ -57,6 +57,8 @@ def portConfig():
         name, rate = setDoc.readline().split(" : ")
         setDoc.close()
     except (ValueError, IOError):
+        logging.warning("No configuration found, creating one")
+        save = False
         name = str(raw_input("System port descripter (case-sensitive): "))
         rate = int(raw_input("Transmission rate: "))
         save = raw_input("Save these settings? [y/N]: ").lower().strip()
@@ -71,26 +73,21 @@ def portConfig():
     return name, rate
 
 
-def main():
-    # retrieving database information
-    try:
-        keyDoc = open("RFIDKeyData.db", "r")
-        keyInfo = keyDoc.readline()
-    except IOError:
-        keyDoc = open("RFIDKeyData.db", "w")
-        keyDoc.write("{}")
-        keyInfo = "{}"
-    keyDoc.close()
-    # There should be one line, a printout of the last list backup, if any.
-    keyInfo = json.loads(keyInfo)
-    print keyInfo
-    settings = portConfig()
-    portName, baudRate = settings[0], settings[1]
+def init():
+    global keydb
+    global doordb
+    global connection
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Welcome to 'whosin'".center(80, '-'))
+    keydb = jsondb.db("keys.db")
+    doordb = jsondb.db("doors.db")
+    portName, bautRate = portConfig()
     connection = RFID.RFIDReader(portName, baudRate)
-    print "Now listening to specified port."
+    
+def main():
     while listening:
         connection.readProtocol()
         access(connection)
 
-
+init()
 main()

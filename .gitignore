@@ -42,4 +42,3 @@ docs/thinkspace.txt
 docs/*.pdf
 docs/*.png
 test.py
-jsondb.py
