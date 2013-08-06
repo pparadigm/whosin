@@ -23,7 +23,8 @@
 # 6. Create list and process for determining who is in the building ("in" and
 #    "out" scanner tags)
 # 7. Add LCD screen outputs.
-# 8. Make databases pretty.
+# 8. Add door control (servos).
+# 9. Make databases pretty.
 #
 # ---------
 
@@ -31,6 +32,7 @@
 import json
 
 import RFID
+import jsondb
 
 listening = True
 
@@ -81,6 +83,7 @@ def main():
     keyDoc.close()
     # There should be one line, a printout of the last list backup, if any.
     keyInfo = json.loads(keyInfo)
+    print keyInfo
     settings = portConfig()
     portName, baudRate = settings[0], settings[1]
     connection = RFID.RFIDReader(portName, baudRate)

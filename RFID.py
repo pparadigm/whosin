@@ -35,7 +35,7 @@ class RFIDReader:
         # performing xor calculation to get the checksum
         self.calcCksm = ord(self.unhexID[0])
         for byte in range(1, 5):
-            self.calcCksm = self.calcCksm ^ ord(self.unhexID[byte])
+            self.calcCksm ^= ord(self.unhexID[byte])
         if self.calcCksm == self.scanCksm:
             self.isValid = True
             logging.info("Scan was good.")

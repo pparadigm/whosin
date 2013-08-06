@@ -37,8 +37,9 @@ nosetests.xml
 # Files
 *.conf
 RFID Chart Info.txt
-*.db
 docs/thinkspace.txt
+*.db
 docs/*.pdf
+docs/*.png
 test.py
 jsondb.py
