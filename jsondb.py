@@ -41,7 +41,6 @@ class db:
         if key in self.db: #check if key exists
             if upsert:
                 self.db[key]={"user":user, "auth":auth}
-                logging.warning("User '%s' already exists with key %s",user,key) 
                 return 0
             else:
                 logging.error("User '%s' already exists with key %s; (is upsert set?)",user,key) 
