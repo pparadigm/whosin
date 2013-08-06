@@ -87,9 +87,3 @@ class db:
         #sync t1data to t3data
         json.dump(self.db, t3data, indent=2)
         t3data.close()
-        
-    def _confirmt3(self):
-        logging.debug("Confirming t3 integrity")
-        t3data=open(self.t3file)
-        self.dbtest=json.load(t3data)
-        t3data.close()
