@@ -1,2 +1,4 @@
 Please see the top of each source file. I keep the to-do list there because 
-then I will remember to update it.
+then I will remember to update it. Also, in this directory is a diagram of
+the flow of the program. That should give you somewhat of an idea of what 
+still needs to be done, if you compare it to the program.

@@ -41,4 +41,5 @@ docs/thinkspace.txt
 *.db
 docs/*.pdf
 docs/*.png
+!docs/whosinFlowchart.png
 test.py
