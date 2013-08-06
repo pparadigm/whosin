@@ -41,3 +41,4 @@ RFID Chart Info.txt
 docs/thinkspace.txt
 docs/*.pdf
 test.py
+jsondb.py

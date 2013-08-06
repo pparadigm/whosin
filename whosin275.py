@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: August 1, 2013 @ 3:02PM
+# last updated: August 2, 2013 @ 10:36AM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
@@ -13,20 +13,19 @@
 #       require a restart in between. I would like to improve this, because
 #       the doors would not be operable while the program database information
 #       was modified.
-# 2. Create list and process for determining who is in the building ("in" and
-#    "out" scanner tags)
-# 3. No duplicate IDs in key database
+# 2. No duplicate IDs in key database
 #    a. What happens if one is manually added to the database? (json might
 #       handle this already)
-# 4. Back up whenever a card is added or removed, in case of power failure
-# 5. Way to change settings without deleting whosin.conf file (will be done
+# 3. Back up whenever a card is added or removed, in case of power failure
+# 4. Way to change settings without deleting whosin.conf file (will be done
 #    with CLI)
-# 6. Make databases pretty.
+# 5. Add door database.
+# 6. Create list and process for determining who is in the building ("in" and
+#    "out" scanner tags)
+# 7. Add LCD screen outputs.
+# 8. Make databases pretty.
 #
 # ---------
-
-
-import json
 
 import RFID
 import sys
@@ -45,8 +44,9 @@ def access(scan):
         print ID
     else:
         # will eventually print to the LCD screen
-        print "Bad scan. Please rescan your tag."
+        print "Bad scan. Try rescanning."
         return
+
 
 def portConfig():
     try:
@@ -69,18 +69,19 @@ def portConfig():
             print "Settings not saved."
     return name, rate
 
+
 def main():
     logging.info("Welcome to 'whoisin'".center(80, '-'))
     # retrieving database information
     try:
         keyDoc = open("RFIDKeyData.db", "r")
+        keyInfo = keyDoc.readline()
     except IOError:
         keyDoc = open("RFIDKeyData.db", "w")
-        keyDoc.close()
-        keyDoc = open("RFIDKeyData.db", "r")
-    # There should be one line, a printout of the last list backup, if any.
-    keyInfo = str(keyDoc.readline())
+        keyDoc.write("{}")
+        keyInfo = "{}"
     keyDoc.close()
+    # There should be one line, a printout of the last list backup, if any.
     keyInfo = json.loads(keyInfo)
     settings = portConfig()
     portName, baudRate = settings[0], settings[1]
