@@ -70,27 +70,21 @@ def portConfig():
     return name, rate
 
 
-def main():
-    logging.info("Welcome to 'whoisin'".center(80, '-'))
-    # retrieving database information
-    try:
-        keyDoc = open("RFIDKeyData.db", "r")
-        keyInfo = keyDoc.readline()
-    except IOError:
-        keyDoc = open("RFIDKeyData.db", "w")
-        keyDoc.write("{}")
-        keyInfo = "{}"
-    keyDoc.close()
-    # There should be one line, a printout of the last list backup, if any.
-    keyInfo = json.loads(keyInfo)
-    settings = portConfig()
-    portName, baudRate = settings[0], settings[1]
+def init():
+    global keydb
+    global doordb
+    global connection
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Welcome to 'whosin'".center(80, '-'))
+    keydb = jsondb.db("keys.db")
+    doordb = jsondb.db("doors.db")
+    portName, bautRate = portConfig()
     connection = RFID.RFIDReader(portName, baudRate)
-    print "Now listening to specified port."
+    
+def main():
     while listening:
         connection.readProtocol()
         access(connection)
 
-
-logging.basicConfig(level=logging.DEBUG)
+init()
 main()
