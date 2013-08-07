@@ -35,22 +35,47 @@ import RFID
 listening = True
 
 
+def keyRetrieval(ID):
+    logging.info("Retrieving key info from database...")
+    for index in range(len(keyDB)):
+        if ID in keyDB[index]:
+            for person in keyDB[index][ID]:
+                level = int(keyDB[index][ID][person])
+                logging.info("Information found.")
+                logging.debug("Key returned name of %s and access level \
+%i."%(person, level))
+                return level, person
+    logging.info("No information found.")
+    return None, None
+
+
+def doorRetrieval():
+    # For now, door is hardcoded.
+    door = "Front Door IN"
+    logging.info("Tag scanned at %s."%(door))
+    # The following is a lie, for now.
+    logging.info("Retrieving door info from database...")
+    level = int(-1)
+    logging.info("Information found.")
+    logging.debug("Door lookup returned required access level of %i."%(level))
+    return level
+
+
 # Print statements in this function should eventually print to the LCD screen.
 def access(scan):
     # capitalized as a stylistic choice
     scan.ID = scan.ID.upper()
     if scan.isValid:
-        logging.info("Retrieving key info from database...")
-        for index in range(len(keyDB)):
-            if scan.ID in keyDB[index]:
-                for name in keyDB[index][scan.ID]:
-                    level = keyDB[index][scan.ID][name]
-                    logging.info("Information found.")
-                    logging.debug("Key returned name of %s and access level \
-%s."%(name, level))
-                    print "Welcome, %s."%(name)
-                    return
-        print "Key does not exist. No access."
+        search = keyRetrieval(scan.ID)
+        accessLevel, name = search[0], search[1]
+        if accessLevel is None:
+            print "Key does not exist. No access."
+        else:
+            roomLevel = doorRetrieval()
+            if accessLevel <= roomLevel:
+                print "Welcome, %s."%(name)
+            else:
+                print "%s does not have access to this room."%(name)
     else:
         print "Bad scan. Try rescanning."
         return
