@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: August 2, 2013 @ 10:36AM
+# last updated: August 6, 2013 @ 4:34PM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
@@ -19,12 +19,11 @@
 # 3. Back up whenever a card is added or removed, in case of power failure
 # 4. Way to change settings without deleting whosin.conf file (will be done
 #    with CLI)
-# 5. Add door database.
-# 6. Create list and process for determining who is in the building ("in" and
+# 5. Create list and process for determining who is in the building ("in" and
 #    "out" scanner tags)
-# 7. Add LCD screen outputs.
-# 8. Add door control (servos).
-# 9. Make databases pretty.
+# 6. Add LCD screen outputs.
+# 7. Add door control (servos).
+# 8. Make databases pretty.
 #
 # ---------
 
@@ -36,16 +35,19 @@ import RFID
 listening = True
 
 
+# Print statements in this function should eventually print to the LCD screen.
 def access(scan):
     # capitalized as a stylistic choice
-    ID = scan.ID.upper()
+    scan.ID = scan.ID.upper()
     if scan.isValid:
-        # Permission checks will be performed, door will open or remain closed
-        # based on that check, status message will be displayed on LCD screen.
-        # But for now:
-        print ID
+        for index in range(len(keyDB)):
+            if scan.ID in keyDB[index]:
+                for name in keyDB[index][scan.ID]:
+                    level = keyDB[index][scan.ID][name]
+                    print scan.ID, name, level
+                    return
+        print "Key does not exist. No access."
     else:
-        # will eventually print to the LCD screen
         print "Bad scan. Try rescanning."
         return
 
@@ -84,16 +86,16 @@ def startup():
         keyDB = keyDoc.readline()
     except IOError:
         keyDoc = open("keys.db", "w")
-        keyDoc.write("[]")
-        keyDB = "[]"
+        keyDoc.write("[{}]")
+        keyDB = "[{}]"
     keyDoc.close()
     try:
         doorDoc = open("doors.db", "r")
         doorDB = doorDoc.readline()
     except IOError:
         doorDoc = open("doors.db", "w")
-        doorDoc.write("[]")
-        doorDB = "[]"
+        doorDoc.write("[{}]")
+        doorDB = "[{}]"
     doorDoc.close()
     keyDB = json.loads(keyDB)
     doorDB = json.loads(doorDB)
@@ -104,6 +106,7 @@ def startup():
 
 def main():
     while listening:
+        print "Scanner is ready."
         connection.readProtocol()
         access(connection)
 
@@ -111,3 +114,16 @@ def main():
 
 startup()
 main()
+
+
+# Note to self:
+# JSON data in this program is stored like so:
+# list = [{"RFID ID 1": {"Name of Person 1": "Access Level for Person 1"}},
+#         {"RFID ID 2": {"Name of Person 2": "Access Level for Person 2"}},
+#         {etc...}]
+#
+# How to get individual data out of that:
+## for index in range(len(list)):
+## for ID in list[index]:
+##    for name in list[index][ID]:
+##        level = list[index][ID][name]
