@@ -36,10 +36,11 @@ nosetests.xml
 
 # Files
 *.conf
+*.db
 RFID Chart Info.txt
 docs/thinkspace.txt
-*.db
 docs/*.pdf
 docs/*.png
 !docs/whosinFlowchart.png
+!test files/*.db
 test.py
