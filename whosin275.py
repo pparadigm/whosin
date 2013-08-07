@@ -40,11 +40,15 @@ def access(scan):
     # capitalized as a stylistic choice
     scan.ID = scan.ID.upper()
     if scan.isValid:
+        logging.info("Retrieving key info from database...")
         for index in range(len(keyDB)):
             if scan.ID in keyDB[index]:
                 for name in keyDB[index][scan.ID]:
                     level = keyDB[index][scan.ID][name]
-                    print scan.ID, name, level
+                    logging.info("Information found.")
+                    logging.debug("Key returned name of %s and access level \
+%s."%(name, level))
+                    print "Welcome, %s."%(name)
                     return
         print "Key does not exist. No access."
     else:
@@ -114,16 +118,3 @@ def main():
 
 startup()
 main()
-
-
-# Note to self:
-# JSON data in this program is stored like so:
-# list = [{"RFID ID 1": {"Name of Person 1": "Access Level for Person 1"}},
-#         {"RFID ID 2": {"Name of Person 2": "Access Level for Person 2"}},
-#         {etc...}]
-#
-# How to get individual data out of that:
-## for index in range(len(list)):
-## for ID in list[index]:
-##    for name in list[index][ID]:
-##        level = list[index][ID][name]
