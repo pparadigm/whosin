@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: August 6, 2013 @ 4:34PM
+# last updated: August 7, 2013 @ 1:28PM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
@@ -53,10 +53,12 @@ def doorRetrieval():
     # For now, door is hardcoded.
     door = "Front Door IN"
     logging.info("Tag scanned at %s."%(door))
-    # The following is a lie, for now.
+    # door will never not be in the database, as it is equivalent to the
+    # scanner that the key ID is sent from.
     logging.info("Retrieving door info from database...")
-    level = int(-1)
-    logging.info("Information found.")
+    for index in range(len(doorDB)):
+        if door in doorDB[index]:
+            level = doorDB[index][door]
     logging.debug("Door lookup returned required access level of %i."%(level))
     return level
 
@@ -66,12 +68,12 @@ def access(scan):
     # capitalized as a stylistic choice
     scan.ID = scan.ID.upper()
     if scan.isValid:
+        roomLevel = doorRetrieval()
         search = keyRetrieval(scan.ID)
         accessLevel, name = search[0], search[1]
         if accessLevel is None:
             print "Key does not exist. No access."
         else:
-            roomLevel = doorRetrieval()
             if accessLevel <= roomLevel:
                 print "Welcome, %s."%(name)
             else:
