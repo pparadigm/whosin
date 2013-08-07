@@ -7,6 +7,5 @@ server where they are checked against a database and then a response is sent
 to the microprocessor which controls the door locks.
 
 
-This program should run well wherever the PySerial and jsondb libraries can be
-installed:
+This program should run well wherever the PySerial library can be installed:
 http://pyserial.sourceforge.net/pyserial.html
