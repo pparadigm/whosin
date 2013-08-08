@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # written in Python 2.7.5 by Prime Paradigm (@pparadigm on GitHub)
 # developed on a Win7 system
-# last updated: August 8, 2013 @ 9:41AM
+# last updated: August 8, 2013 @ 3:00PM
 
 # This program is meant to handle the door management process with the RFID
 # keys, and allow management of the system. Might track who is in the building.
@@ -36,6 +36,7 @@ listening = True
 
 
 def keyRetrieval(ID):
+    '''Find data tied to ID, return it. If none, return None.'''
     logging.info("Retrieving key info from database...")
     try:
         for person in key_Database[ID]:
@@ -50,6 +51,7 @@ def keyRetrieval(ID):
 
 
 def doorRetrieval():
+    '''Find authorization required to pass the scanner.''' 
     # Since there is no way to have more than one connection at the moment,
     # door will be hardcoded.
     door = "Front Door IN"
@@ -65,6 +67,7 @@ def doorRetrieval():
 
 # Print statements in this function should eventually print to the LCD screen.
 def access(scan):
+    '''Determine if tag has access level required to enter room.'''
     # capitalized as a stylistic choice
     scan.ID = scan.ID.upper()
     if scan.isValid:
@@ -84,6 +87,7 @@ def access(scan):
 
 
 def portConfig():
+    '''Poll user for scanner connection data. Optionally save it.'''
     try:
         logging.info("Looking for configuration...")
         setDoc = open("whosin.conf", "r")
@@ -109,6 +113,7 @@ def portConfig():
 
 
 def startup():
+    '''Get saved database information, invoke instance of RFIDReader class.'''
     global key_Database
     global door_Database
     global connection
@@ -140,6 +145,7 @@ def startup():
 
 
 def main():
+    '''Continually listen to scanner connection.'''
     while listening:
         print "Scanner is ready."
         connection.readProtocol()
