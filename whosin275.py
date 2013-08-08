@@ -51,7 +51,7 @@ def keyRetrieval(ID):
 
 
 def doorRetrieval():
-    '''Find authorization required to pass the scanner.''' 
+    '''Find authorization required to pass the scanner.'''
     # Since there is no way to have more than one connection at the moment,
     # door will be hardcoded.
     door = "Front Door IN"
