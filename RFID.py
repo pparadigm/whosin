@@ -20,7 +20,7 @@ class RFIDReader:
 
     def readProtocol(self):
         self.serIn = self.port.readline()
-        logging.info('Read in: "%s"'%(self.serIn))
+        logging.debug('Read in: "%s"'%(self.serIn))
         # "" signifies the start of the information stream, while "" denotes
         # the end. Before the end is \r\n. ".readline()" splits after the \n,
         # so I just need to remove those characters from the end of my string,
@@ -41,5 +41,6 @@ class RFIDReader:
             logging.info("Scan was good.")
         else:
             self.isValid = False
-            logging.info("Scan was bad. Provided checksum was %i, while \
-calculated checksum was %i."%(self.scanCksm, self.calcCksm))
+            logging.info("Scan was bad. Provided checksum was %i, while "
+                         "calculated checksum was %i."
+                         %(self.scanCksm, self.calcCksm))

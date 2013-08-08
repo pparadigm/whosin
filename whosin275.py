@@ -38,11 +38,11 @@ listening = True
 def keyRetrieval(ID):
     logging.info("Retrieving key info from database...")
     try:
-        for person in keyDB[ID]:
-            level = int(keyDB[ID][person])
+        for person in key_Database[ID]:
+            level = int(key_Database[ID][person])
             logging.info("Information found.")
-            logging.debug("Key returned name of %s and access level \
-%i."%(person, level))
+            logging.debug("Key returned name of %s and access level %i."
+                          %(person, level))
             return level, person
     except KeyError:
         logging.info("No information found.")
@@ -50,16 +50,15 @@ def keyRetrieval(ID):
 
 
 def doorRetrieval():
-    # For now, door is hardcoded. This will cause errors if the test database
-    # for doors isn't properly renamed and put into the main directory of this
-    # program.
+    # Since there is no way to have more than one connection at the moment,
+    # door will be hardcoded.
     door = "Front Door IN"
     logging.info("Tag scanned at %s."%(door))
     # door will never not be in the database, as it is equivalent to the
     # scanner that the key ID is sent from.
     logging.info("Retrieving door info from database...")
-    if door in doorDB:
-        level = doorDB[door]
+    if door in door_Database:
+        level = door_Database[door]
     logging.debug("Door lookup returned required access level of %i."%(level))
     return level
 
@@ -88,7 +87,7 @@ def portConfig():
     try:
         logging.info("Looking for configuration...")
         setDoc = open("whosin.conf", "r")
-        name, rate = setDoc.readline().split(" : ")
+        name, rate = setDoc.read().split(" : ")
         setDoc.close()
         logging.info("Configuration found.")
     except (ValueError, IOError):
@@ -110,8 +109,8 @@ def portConfig():
 
 
 def startup():
-    global keyDB
-    global doorDB
+    global key_Database
+    global door_Database
     global connection
     logging.basicConfig(level = logging.DEBUG)
     logging.info("Welcome to Who's In.".center(80, '-'))
@@ -119,22 +118,22 @@ def startup():
     # how, please let me know.
     try:
         keyDoc = open("keys.db", "r")
-        keyDB = keyDoc.readline()
+        key_Database = keyDoc.read()
     except IOError:
         keyDoc = open("keys.db", "w")
         keyDoc.write("{}")
-        keyDB = "{}"
+        key_Database = "{}"
     keyDoc.close()
     try:
         doorDoc = open("doors.db", "r")
-        doorDB = doorDoc.readline()
+        door_Database = doorDoc.read()
     except IOError:
         doorDoc = open("doors.db", "w")
         doorDoc.write("{}")
-        doorDB = "{}"
+        door_Database = "{}"
     doorDoc.close()
-    keyDB = json.loads(keyDB)
-    doorDB = json.loads(doorDB)
+    key_Database = json.loads(key_Database)
+    door_Database = json.loads(door_Database)
     portName, baudRate = portConfig()
     connection = RFID.RFIDReader(portName, baudRate)
     print "Now listening to specified port."
